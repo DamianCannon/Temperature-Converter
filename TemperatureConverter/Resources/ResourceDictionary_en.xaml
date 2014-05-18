@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    
+    <!-- String resource that can be localised -->
+    <sys:String x:Key="WindowTitle">Convert Your Temperatures</sys:String>
+    <sys:String x:Key="LabelFahrenheit">Fahrenheit</sys:String>
+    <sys:String x:Key="LabelCelsius">Celsius</sys:String>
+    <sys:String x:Key="LabelHeading">Fahrenheit To Celsius Conversion Tool</sys:String>
+    <sys:String x:Key="LabelCold">It's a cold day out there</sys:String>
+    <sys:String x:Key="LabelWarm">The perfect weather for a picnic</sys:String>
+    <sys:String x:Key="LabelHot">Make sure you pack sun cream</sys:String>
+    <sys:String x:Key="LabelFreeze">Well now this is really freezing</sys:String>
+    
+</ResourceDictionary>

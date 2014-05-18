@@ -1,0 +1,136 @@
+﻿<Window x:Class="TemperatureConverterApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:TemperatureConverterApp"
+        Title="{DynamicResource WindowTitle}" 
+        Height="460" 
+        Width="530" 
+        MinHeight="460" 
+        MinWidth="530" 
+        Background="Cornsilk">
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <local:FahrenheitToCelsiusConverter x:Key="FahrenheitToCelsiusConverter"></local:FahrenheitToCelsiusConverter>
+            <local:IsLessThanConverter x:Key="IsLessThanConverter"></local:IsLessThanConverter>
+            <local:IsGreaterThanConverter x:Key="IsGreaterThanConverter"></local:IsGreaterThanConverter>
+            
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/GeneralSettings.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>            
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <DockPanel HorizontalAlignment="Center" 
+               LastChildFill="False" 
+               Margin="20,20,20,20">
+        
+        <Border DockPanel.Dock="Top" 
+                CornerRadius="5"
+                BorderThickness="2" 
+                BorderBrush="Black">
+            <TextBlock Height="Auto" 
+                       TextAlignment="Center"
+                       Text="{DynamicResource LabelHeading}">
+            </TextBlock>
+        </Border>
+
+        <Border DockPanel.Dock="Left" 
+                CornerRadius="5"
+                BorderThickness="2" 
+                BorderBrush="Black">
+            <Slider Name="FarenheitSlider" 
+                DockPanel.Dock="Left" 
+                Width="50" 
+                Height="300"
+                Orientation="Vertical" 
+                VerticalAlignment="Center"
+                Minimum="-148" 
+                Maximum="212" 
+                Value="70" 
+                Margin="10"
+                TickPlacement="Both"
+                TickFrequency="10"
+                AutoToolTipPlacement="BottomRight">
+                <Slider.Background>
+                    <LinearGradientBrush Opacity="0.5">
+                        <GradientStopCollection>
+                            <GradientStop Color="Red" Offset="0.0"></GradientStop>
+                            <GradientStop Color="Blue" Offset="1.0"></GradientStop>
+                        </GradientStopCollection>
+                    </LinearGradientBrush>
+                </Slider.Background>
+            </Slider>
+        </Border>
+
+        <Border DockPanel.Dock="Right" 
+                CornerRadius="5"
+                BorderThickness="2" 
+                BorderBrush="Black">
+            <StackPanel Orientation="Vertical" 
+                        Margin="20"
+                        Height="Auto" 
+                        Width="Auto">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Label Content="{DynamicResource LabelFahrenheit}" 
+                       Width="Auto"></Label>
+                    <TextBox Name="Farenheit" 
+                         VerticalAlignment="Center"
+                         MinWidth="60"
+                         Text="{Binding ElementName=FarenheitSlider, Path=Value, StringFormat={}{0:F2}}"></TextBox>
+                    <Label Width="25">=</Label>
+                    <Label Content="{DynamicResource LabelCelsius}" 
+                           HorizontalAlignment="Right"
+                           Width="75"></Label>
+                    <TextBox Name="Celsius" 
+                             VerticalAlignment="Center"
+                             MinWidth="60"
+                             Text="{Binding ElementName=Farenheit, Path=Text, Converter={StaticResource FahrenheitToCelsiusConverter}, StringFormat={}{0:F2}, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <Image Margin="10"
+                           Width="300">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Setter Property="Source" Value="{StaticResource ImageWarm}"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Celsius, Path=Text, Mode=OneWay, Converter={StaticResource IsLessThanConverter}, ConverterParameter=-10}" Value="True">
+                                        <Setter Property="Source" Value="{StaticResource ImageCold}"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Celsius, Path=Text, Mode=OneWay, Converter={StaticResource IsGreaterThanConverter}, ConverterParameter=50}" Value="True">
+                                        <Setter Property="Source" Value="{StaticResource ImageHot}"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Celsius, Path=Text, Mode=OneWay, Converter={StaticResource IsLessThanConverter}, ConverterParameter=-50}" Value="True">
+                                        <Setter Property="Source" Value="{StaticResource ImageFreeze}"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>    
+                    </Image>
+                    <TextBlock HorizontalAlignment="Center">
+                        <Run>
+                            <Run.Style>
+                                <Style TargetType="{x:Type Run}">
+                                    <Setter Property="Text" Value="{DynamicResource LabelWarm}"></Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=Celsius, Path=Text, Mode=OneWay, Converter={StaticResource IsLessThanConverter}, ConverterParameter=-10}" Value="True">
+                                            <Setter Property="Text" Value="{DynamicResource LabelCold}"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=Celsius, Path=Text, Mode=OneWay, Converter={StaticResource IsGreaterThanConverter}, ConverterParameter=50}" Value="True">
+                                            <Setter Property="Text" Value="{DynamicResource LabelHot}"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=Celsius, Path=Text, Mode=OneWay, Converter={StaticResource IsLessThanConverter}, ConverterParameter=-50}" Value="True">
+                                            <Setter Property="Text" Value="{DynamicResource LabelFreeze}"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Run.Style>
+                        </Run>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        
+    </DockPanel>
+</Window>
